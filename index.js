@@ -1,7 +1,10 @@
 const body = document.body;
 const calcContainer = document.querySelector(".calc-container");
 const calcScreen = document.querySelector('.calc-screen');
-const calcDisplay = document.querySelector('.calc-display');
+const calcDisplay = document.querySelector('.calc-large-display');
+const calcSmallDisplay = document.querySelector('.calc-small-display');
+const calcOpDisplay = document.querySelector('.calc-display-operand');
+const calcButtons = document.querySelector('.operand-buttons');
 const btn0 = document.querySelector('#zero');
 const btn1 = document.querySelector('#one');
 const btn2 = document.querySelector('#two');
@@ -12,9 +15,18 @@ const btn6 = document.querySelector('#six');
 const btn7 = document.querySelector('#seven');
 const btn8 = document.querySelector('#eight');
 const btn9 = document.querySelector('#nine');
-const btnC = document.querySelector('.calc-clear-screen');
+const btnC = document.querySelector('.calc-container #clear-button');
+const btnEq = document.querySelector('#eq');
+const btnAdd = document.querySelector('#op-add');
+const btnSub = document.querySelector('#op-sub');
+const btnMul = document.querySelector('#op-mul');
+const btnDiv = document.querySelector('#op-div'); 
 
-let currentNum = "";
+let currentArr = [];
+let storedArr = [];
+let currentOp = NaN;
+let sum = NaN;
+
 
 function multiply(num1, num2) {
     return num1 * num2;
@@ -25,6 +37,8 @@ function subtract(num1, num2) {
 };
 
 function add(num1, num2) {
+    console.log(num1);
+    console.log(num2);
     return num1 + num2;
 };
 
@@ -76,16 +90,90 @@ btn9.addEventListener('click', () => {
     display(9);
 })
 
-/* is null? */
 btnC.addEventListener('click', () => {
-    display("erase");
+    clearDisplay();
 })
 
+btnAdd.addEventListener('click', () => {
+    storedArr = currentArr;
+    currentOp = "add";
+    currentArr = [];
+    calcDisplay.innerHTML = "";
+    calcSmallDisplay.innerHTML = storedArr.join('');
+    calcOpDisplay.innerText = '+'
+})
 
+btnSub.addEventListener('click', () => {
+    storedArr = currentArr;
+    currentOp = "sub";
+    currentArr = [];
+    calcDisplay.innerHTML = "";
+    calcSmallDisplay.innerHTML = storedArr.join('');
+    calcOpDisplay.innerText = '-'
+})
+
+btnDiv.addEventListener('click', () => {
+    storedArr = currentArr;
+    currentOp = "div";
+    currentArr = [];
+    calcDisplay.innerHTML = "";
+    calcSmallDisplay.innerHTML = storedArr.join('');
+    calcOpDisplay.innerText = '/'
+})
+
+btnMul.addEventListener('click', () => {
+    storedArr = currentArr;
+    currentOp = "mul";
+    currentArr = [];
+    calcDisplay.innerHTML = "";
+    calcSmallDisplay.innerHTML = storedArr.join('');
+    calcOpDisplay.innerText = '*'
+})
+
+btnEq.addEventListener('click', () => {
+    let currentNum = parseInt(currentArr.join(''));
+    let storedNum = parseInt(storedArr.join(''));
+    console.log(currentNum);
+    console.log(storedNum);
+    if (currentOp === "add") {
+        sum = add(storedNum, currentNum)
+    } else if (currentOp === "sub") {
+        sum = subtract(storedNum, currentNum)
+    } else if (currentOp === "mul") {
+        sum = multiply(storedNum, currentNum)
+    } else if (currentOp === "div") {
+        sum = divide(storedNum, currentNum)
+    };
+    console.log(typeof(storedNum))
+    console.log(typeof(currentNum))
+    currentOp = "";
+    displaySum(sum);
+    console.log(typeof(sum))
+    calcOpDisplay.innerText = ''
+})
+
+function displaySum(num) {
+    calcDisplay.innerText = num;
+};
 
 function display(num) {
     /* add IF erase */
-    currentNum = `${currentNum}${num}`;
-    calcDisplay.innerText = `${currentNum}`; 
+    currentArr.push(num);
+    let currentNum = parseInt(currentArr.join(''));
+    let storedNum = parseInt(storedArr.join(''));
+    calcDisplay.innerText = `${currentNum}`;
+    if (storedNum >= 0) {
+        calcSmallDisplay.innerText = `${storedNum}`;
+    }
+    
 }
+
+function clearDisplay() {
+    currentArr = [];
+    storedArr = [];
+    calcSmallDisplay.innerHTML = ""
+    calcDisplay.innerHTML = "";
+    sum = NaN;
+}
+
 
