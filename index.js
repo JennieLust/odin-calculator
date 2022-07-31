@@ -24,8 +24,10 @@ const btnDiv = document.querySelector('#op-div');
 
 let currentArr = [];
 let storedArr = [];
-let currentOp = NaN;
+let currentOp = "";
 let sum = NaN;
+
+
 
 
 function multiply(num1, num2) {
@@ -37,8 +39,6 @@ function subtract(num1, num2) {
 };
 
 function add(num1, num2) {
-    console.log(num1);
-    console.log(num2);
     return num1 + num2;
 };
 
@@ -59,121 +59,179 @@ function operate(operator, num1, num2) {
         alert("Unvalid operator")
     };
 ;}
+
 btn0.addEventListener('click', () => {
-    display(0);
+    currentArr.push(0);
+    displayCurrArr()
+    if (storedArr.length >= 1) {
+        displayStoArr();
+    }
 })
 btn1.addEventListener('click', () => {
-    display(1);
+    currentArr.push(1);
+    displayCurrArr()
+    if (storedArr.length >= 1) {
+        displayStoArr();
+    }
+
 })
 btn2.addEventListener('click', () => {
-    display(2);
+    currentArr.push(2);
+    displayCurrArr()
+    if (storedArr.length >= 1) {
+        displayStoArr();
+    }
+
 })
 btn3.addEventListener('click', () => {
-    display(3);
+    currentArr.push(3);
+    displayCurrArr()
+    if (storedArr.length >= 1) {
+        displayStoArr();
+    }
+
 })
 btn4.addEventListener('click', () => {
-    display(4);
+    currentArr.push(4);
+    displayCurrArr()
+    if (storedArr.length >= 1) {
+        displayStoArr();
+    }
+
 })
 btn5.addEventListener('click', () => {
-    display(5);
+    currentArr.push(5);
+    displayCurrArr()
+    if (storedArr.length >= 1) {
+        displayStoArr();
+    }
+
 })
 btn6.addEventListener('click', () => {
-    display(6);
+    currentArr.push(6);
+    displayCurrArr()
+    if (storedArr.length >= 1) {
+        displayStoArr();
+    }
+ 
 })
 btn7.addEventListener('click', () => {
-    display(7);
+    currentArr.push(7);
+    displayCurrArr()
+    if (storedArr.length >= 1) {
+        displayStoArr();
+    }
+
 });
 btn8.addEventListener('click', () => {
-    display(8);
+    currentArr.push(8);
+    displayCurrArr()
+    if (storedArr.length >= 1) {
+        displayStoArr();
+    }
+
 });
 btn9.addEventListener('click', () => {
-    display(9);
+    currentArr.push(9);
+    displayCurrArr()
+    if (storedArr.length >= 1) {
+        displayStoArr();
+    }
+
 })
 
+    const click = new Event('click');
+
 btnC.addEventListener('click', () => {
-    clearDisplay();
+    calcDisplay.innerHTML = "";
+    calcSmallDisplay.innerHTML = "";
+    calcOpDisplay.innerHTML = "";
+    storedArr = [];
+    currentArr = [];
+    sum = 0;
+    if (currentOp != "" && currentArr.length >= 0) {
+        btnEq.dispatchEvent(click);
+    }
+
 })
 
 btnAdd.addEventListener('click', () => {
     storedArr = currentArr;
-    currentOp = "add";
     currentArr = [];
-    calcDisplay.innerHTML = "";
-    calcSmallDisplay.innerHTML = storedArr.join('');
-    calcOpDisplay.innerText = '+'
+    currentOp = "+";
+    displayCurrOp();
+    displayCurrArr();
+    displayStoArr();
 })
 
 btnSub.addEventListener('click', () => {
     storedArr = currentArr;
-    currentOp = "sub";
     currentArr = [];
-    calcDisplay.innerHTML = "";
-    calcSmallDisplay.innerHTML = storedArr.join('');
-    calcOpDisplay.innerText = '-'
+    currentOp = "-";
+    displayCurrOp();
+    displayCurrArr();
+    displayStoArr();
 })
 
 btnDiv.addEventListener('click', () => {
     storedArr = currentArr;
-    currentOp = "div";
     currentArr = [];
-    calcDisplay.innerHTML = "";
-    calcSmallDisplay.innerHTML = storedArr.join('');
-    calcOpDisplay.innerText = '/'
+    currentOp = "/";
+    displayCurrOp();
+    displayCurrArr();
+    displayStoArr();
+
 })
 
 btnMul.addEventListener('click', () => {
     storedArr = currentArr;
-    currentOp = "mul";
     currentArr = [];
-    calcDisplay.innerHTML = "";
-    calcSmallDisplay.innerHTML = storedArr.join('');
-    calcOpDisplay.innerText = '*'
+    currentOp = "*";
+    displayCurrOp();
+    displayCurrArr();
+    displayStoArr();
 })
 
 btnEq.addEventListener('click', () => {
-    let currentNum = parseInt(currentArr.join(''));
-    let storedNum = parseInt(storedArr.join(''));
-    console.log(currentNum);
-    console.log(storedNum);
-    if (currentOp === "add") {
-        sum = add(storedNum, currentNum)
-    } else if (currentOp === "sub") {
-        sum = subtract(storedNum, currentNum)
-    } else if (currentOp === "mul") {
-        sum = multiply(storedNum, currentNum)
-    } else if (currentOp === "div") {
-        sum = divide(storedNum, currentNum)
-    };
-    console.log(typeof(storedNum))
-    console.log(typeof(currentNum))
+    if (currentOp === "+") {
+        sum = add(parseInt(storedArr.join("")), parseInt(currentArr.join(""))) 
+    } else if (currentOp === "-") {
+        sum = subtract(parseInt(storedArr.join("")), parseInt(currentArr.join("")))
+    } else if (currentOp === "/") {
+        sum = divide(parseInt(storedArr.join("")), parseInt(currentArr.join("")))
+    } else if (currentOp === "*") {
+        sum = multiply(parseInt(storedArr.join("")), parseInt(currentArr.join("")))
+    } else if (currentArr.length < 1 && storedArr.length < 1) {
+        sum = 0
+    } else if (currentArr.length < 1 && storedArr.length >= 1) {
+        sum = parseInt(storedArr.join(""))
+    } else if (currentArr >= 1 && storedArr.length < 1) {
+        sum = parseInt(currentArr.join(""))
+    } else {
+        sum = 0;
+    }
+    currentArr = [];
+    storedArr = [];
     currentOp = "";
-    displaySum(sum);
-    console.log(typeof(sum))
-    calcOpDisplay.innerText = ''
+    currentArr.push(sum);
+    displayCurrArr()
+    displayCurrOp()
+    displayStoArr();
 })
 
-function displaySum(num) {
-    calcDisplay.innerText = num;
+function displayCurrArr() {
+    calcDisplay.innerHTML = currentArr.join('');
 };
 
-function display(num) {
-    /* add IF erase */
-    currentArr.push(num);
-    let currentNum = parseInt(currentArr.join(''));
-    let storedNum = parseInt(storedArr.join(''));
-    calcDisplay.innerText = `${currentNum}`;
-    if (storedNum >= 0) {
-        calcSmallDisplay.innerText = `${storedNum}`;
-    }
+function displayStoArr() {
+    calcSmallDisplay.innerHTML = storedArr.join('');
     
 }
 
-function clearDisplay() {
-    currentArr = [];
-    storedArr = [];
-    calcSmallDisplay.innerHTML = ""
-    calcDisplay.innerHTML = "";
-    sum = NaN;
+function displayCurrOp() {
+    calcOpDisplay.innerHTML = currentOp;
 }
 
 
+
+/* if longer than x, collapse number to factors of ten*/
